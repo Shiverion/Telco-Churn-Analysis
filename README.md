@@ -27,6 +27,36 @@ The telecommunications industry faces a high churn rate. The goal is to predict 
 - Further exploration of other features and more detailed handling of class imbalances will enhance the model's reliability.
 - Regular retraining of the model will help adapt to new trends and improve predictive power over time.
 
+## System Design
+
+### Requirements
+
+- Estimate customer churn from the supplied tabular dataset.
+- Compare preprocessing, resampling, models, and tuning using recall and F2-oriented evaluation.
+
+### Pipeline
+
+```text
+Raw CSV → cleaning / encoding → split and preprocessing pipeline
+        → cross-validation across model and resampler choices
+        → hyperparameter tuning → evaluation → serialized model
+```
+
+The notebook saves the selected estimator to `randomized_search_model.pkl` and exports cleaned data. This is a reproducible analysis artifact, not an online scoring service.
+
+### Trade-offs
+
+| Decision | Benefit | Cost |
+| --- | --- | --- |
+| Optimize recall and F2 for churn risk | Emphasizes missed churners in the decision metric | May increase false positives and outreach cost |
+| Use resampling within model selection | Addresses class imbalance during training | Results depend on split and resampling strategy |
+
+### What to Revisit
+
+- Add a versioned environment and explicit model feature/schema contract.
+- Evaluate calibration and business cost on a later holdout period.
+- Add a batch scoring entry point before integrating the model into an application.
+
 ## **Contact**
 For any questions or feedback, feel free to reach out at:  
 **LInkedin:** https://www.linkedin.com/in/izzulhaq-iqbal/
